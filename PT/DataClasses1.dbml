@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ProjectChangeTracker" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PAULS-PC\SQLEXPRESS;Initial Catalog=ProjectChangeTracker;Integrated Security=True" SettingsObjectName="PT.Properties.Settings" SettingsPropertyName="ProjectChangeTrackerConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ProjectChange" Member="ProjectChanges">
+    <Type Name="ProjectChange">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProjectNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ProjectName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SubProject" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ProjectDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Drafter" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="InitiatedBy" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ChangeType" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ChangeDescription" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="NewVersion" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="OldVersion" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Comments" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Archive" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
