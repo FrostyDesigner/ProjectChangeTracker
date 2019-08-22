@@ -39,7 +39,7 @@ namespace PT
 
     public partial class Form1 : Form
     {
-        public static string conn = ConfigurationManager.ConnectionStrings["DevConnString"].ToString();
+        public static string conn = ConfigurationManager.ConnectionStrings["DevConnString2"].ToString();
 
         public Form1()
         {
@@ -111,36 +111,36 @@ namespace PT
             {
                 // search all
                 // working
-                //var query = from pc in dc.ProjectChanges
-                //                //where (pc.ProjectName.Contains(tbProjectName.Text ?? string.Empty) ||
-                //                //pc.ProjectNumber.Contains(tbProjectNumber.Text ?? string.Empty))
-                //                //select pc;
-                //            where pc.ProjectNumber.Contains(tbProjectNumber.Text ?? string.Empty) &&
-                //                    pc.ProjectName.Contains(tbProjectName.Text ?? string.Empty) &&
-                //                    pc.SubProject.Contains(tbSubProject.Text ?? string.Empty) &&
-                //                    pc.ChangeType.Contains(cbChangeType.Text ?? string.Empty) &&
-                //                    pc.ChangeDescription.Contains(cbDescription.Text ?? string.Empty) &&
-                //                    pc.Comments.Contains(tbComments.Text ?? string.Empty) //&&
-                //                    //pc.Archive.Contains(tbArchive.Text ?? string.Empty)
-                //            //pc.ChangeType.Contains(cbChangeType.Text ? != null : string.Empty)
-                //            select pc;
-
-                // expermiental
                 var query = from pc in dc.ProjectChanges
                                 //where (pc.ProjectName.Contains(tbProjectName.Text ?? string.Empty) ||
                                 //pc.ProjectNumber.Contains(tbProjectNumber.Text ?? string.Empty))
                                 //select pc;
                             where pc.ProjectNumber.Contains(tbProjectNumber.Text ?? string.Empty) &&
-                                    //pc.ProjectName.Contains(tbProjectName.Text ?? string.Empty) //&&
-                                    // longer way of saying same thing...
-                                    pc.ProjectName.Contains(tbProjectName.Text != null ? tbProjectName.Text : string.Empty) &&
-                                    pc.SubProject.Contains(tbSubProject.Text ?? null) //&&
-                                    //pc.ChangeType.Contains(cbChangeType.Text ?? string.Empty) &&
-                                    //pc.ChangeDescription.Contains(cbDescription.Text ?? string.Empty) &&
-                                    //pc.Comments.Contains(tbComments.Text ?? string.Empty) //&&
-                                    //pc.Archive.Contains(tbArchive.Text ?? string.Empty)
-                                    //pc.ChangeType.Contains(cbChangeType.Text ? != null : string.Empty)
+                                    pc.ProjectName.Contains(tbProjectName.Text ?? string.Empty) &&
+                                    pc.SubProject.Contains(tbSubProject.Text ?? string.Empty) &&
+                                    pc.ChangeType.Contains(cbChangeType.Text ?? string.Empty) &&
+                                    pc.ChangeDescription.Contains(cbDescription.Text ?? string.Empty) &&
+                                    pc.Comments.Contains(tbComments.Text ?? string.Empty) //&&
+                                                                                          //pc.Archive.Contains(tbArchive.Text ?? string.Empty)
+                                                                                          //pc.ChangeType.Contains(cbChangeType.Text ? != null : string.Empty)
                             select pc;
+
+                // expermiental
+                //var query = from pc in dc.ProjectChanges
+                //                //where (pc.ProjectName.Contains(tbProjectName.Text ?? string.Empty) ||
+                //                //pc.ProjectNumber.Contains(tbProjectNumber.Text ?? string.Empty))
+                //                //select pc;
+                //            where pc.ProjectNumber.Contains(tbProjectNumber.Text ?? string.Empty) &&
+                //                    //pc.ProjectName.Contains(tbProjectName.Text ?? string.Empty) //&&
+                //                    // longer way of saying same thing...
+                //                    pc.ProjectName.Contains(tbProjectName.Text != null ? tbProjectName.Text : string.Empty) &&
+                //                    pc.SubProject.Contains(tbSubProject.Text ?? null) //&&
+                //                    //pc.ChangeType.Contains(cbChangeType.Text ?? string.Empty) &&
+                //                    //pc.ChangeDescription.Contains(cbDescription.Text ?? string.Empty) &&
+                //                    //pc.Comments.Contains(tbComments.Text ?? string.Empty) //&&
+                //                    //pc.Archive.Contains(tbArchive.Text ?? string.Empty)
+                //                    //pc.ChangeType.Contains(cbChangeType.Text ? != null : string.Empty)
+                //            select pc;
 
 
 
