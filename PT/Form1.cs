@@ -195,6 +195,9 @@ namespace PT
             // executes the appropriate commands to implement the changes to the database 
             dc.SubmitChanges();
             MessageBox.Show("Record Inserted.", "Success");
+
+            string recordName = getRecordName();
+            sendEmail(recordName);
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -539,24 +542,7 @@ namespace PT
             var oldFilePath = string.Empty;
             var newFilePath = string.Empty;
 
-            string projectNumber = tbProjectNumber.Text;
-            string projectName = tbProjectName.Text;
-            string subProject = tbSubProject.Text;
-            string newVersion = tbNewVersion.Text;
-            string projectDescription = cbDescription.SelectedItem.ToString();
-            string projectDate = dtpData.Value.Date.ToString("yyyyMMdd");
-            string archiveFileName = string.Empty;
-
-            // check if the version is greater than 0
-            var isNumeric = int.TryParse(tbNewVersion.Text, out int n);
-            if (n > 0)
-            {
-                 archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} - Revision {projectDate}";
-            }
-            else
-            {
-                 archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} {projectDate}";
-            }
+            string archiveFileName = getRecordName();
 
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -615,6 +601,45 @@ namespace PT
                     MessageBox.Show("Record Id must be populated in Id text box.");
                 }
             }
+        }
+
+        private string getRecordName()
+        {
+            string projectNumber = tbProjectNumber.Text;
+            string projectName = tbProjectName.Text;
+            string subProject = tbSubProject.Text;
+            string newVersion = tbNewVersion.Text;
+            string projectDescription = cbDescription.SelectedItem.ToString();
+            string projectDate = dtpData.Value.Date.ToString("yyyyMMdd");
+            string archiveFileName = string.Empty;
+
+            // check if the version is greater than 0
+            var isNumeric = int.TryParse(tbNewVersion.Text, out int n);
+            if (n > 0)
+            {
+                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} - Revision {projectDate}";
+            }
+            else
+            {
+                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} {projectDate}";
+            }
+
+            return archiveFileName;
+
+        }
+
+        // need to add reference Microsoft.Office.Interop.Outlook - its on the COM tab
+        private void sendEmail(string recordName)
+        {
+            Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
+            Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
+            mailItem.Subject = $"Drawing Updated: {recordName}";
+            mailItem.To = "NadiaK@abfabricators.com";
+            mailItem.Body = $"This is the message.{Environment.NewLine}" +
+                            $"This is the message{Environment.NewLine}" +
+                            "This is the message.";
+            //mailItem.Attachments.Add(logPath);//logPath is a string holding path to the log.txt file
+            mailItem.Display(true); //THIS IS THE CHANGE;
         }
     }
 
