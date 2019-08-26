@@ -39,7 +39,7 @@ namespace PT
 
     public partial class Form1 : Form
     {
-        public static string conn = ConfigurationManager.ConnectionStrings["DevConnString2"].ToString();
+        public static string conn = ConfigurationManager.ConnectionStrings["DevConnString"].ToString();
 
         public Form1()
         {
@@ -197,7 +197,7 @@ namespace PT
             MessageBox.Show("Record Inserted.", "Success");
 
             string recordName = getRecordName();
-            sendEmail(recordName);
+            sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject);
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -617,11 +617,11 @@ namespace PT
             var isNumeric = int.TryParse(tbNewVersion.Text, out int n);
             if (n > 0)
             {
-                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} - Revision {projectDate}";
+                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} - Revision {projectDate}.pdf";
             }
             else
             {
-                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} {projectDate}";
+                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} {projectDate}.pdf";
             }
 
             return archiveFileName;
@@ -629,15 +629,15 @@ namespace PT
         }
 
         // need to add reference Microsoft.Office.Interop.Outlook - its on the COM tab
-        private void sendEmail(string recordName)
+        private void sendEmail(string recordName, string Drafter, string ProjectNumber, string ProjectName, string SubProject)
         {
             Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
             Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
-            mailItem.Subject = $"Drawing Updated: {recordName}";
+            mailItem.Subject = $"Drawing Updated: {ProjectNumber} - {ProjectName} - {SubProject}";
             mailItem.To = "NadiaK@abfabricators.com";
-            mailItem.Body = $"This is the message.{Environment.NewLine}" +
-                            $"This is the message{Environment.NewLine}" +
-                            "This is the message.";
+            mailItem.Body = $"Drafter {Drafter} has updated CAD File at this location: {recordName}.{Environment.NewLine}" +
+                            $"{Environment.NewLine}" +
+                            $"Note:{Environment.NewLine}";
             //mailItem.Attachments.Add(logPath);//logPath is a string holding path to the log.txt file
             mailItem.Display(true); //THIS IS THE CHANGE;
         }
