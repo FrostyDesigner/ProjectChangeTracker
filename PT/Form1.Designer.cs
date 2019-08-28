@@ -54,6 +54,7 @@ namespace PT
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnUpdateGridView = new System.Windows.Forms.Button();
             this.tbArchive = new System.Windows.Forms.TextBox();
             this.tbSubProject = new System.Windows.Forms.TextBox();
             this.btnArchive = new System.Windows.Forms.Button();
@@ -77,6 +78,8 @@ namespace PT
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbCadFile = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -106,7 +109,7 @@ namespace PT
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(779, 348);
+            this.dataGridView1.Size = new System.Drawing.Size(779, 330);
             this.dataGridView1.TabIndex = 144;
             this.dataGridView1.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_RowHeaderMouseDoubleClick);
             // 
@@ -313,6 +316,7 @@ namespace PT
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnUpdateGridView);
             this.splitContainer1.Panel1.Controls.Add(this.tbArchive);
             this.splitContainer1.Panel1.Controls.Add(this.tbSubProject);
             this.splitContainer1.Panel1.Controls.Add(this.btnArchive);
@@ -333,6 +337,7 @@ namespace PT
             this.splitContainer1.Panel1.Controls.Add(this.tbProjectNumber);
             this.splitContainer1.Panel1.Controls.Add(this.tbProjectName);
             this.splitContainer1.Panel1.Controls.Add(this.label13);
+            this.splitContainer1.Panel1.Controls.Add(this.label14);
             this.splitContainer1.Panel1.Controls.Add(this.label11);
             this.splitContainer1.Panel1.Controls.Add(this.label10);
             this.splitContainer1.Panel1.Controls.Add(this.pictureBox1);
@@ -342,6 +347,7 @@ namespace PT
             this.splitContainer1.Panel1.Controls.Add(this.label7);
             this.splitContainer1.Panel1.Controls.Add(this.tbNewVersion);
             this.splitContainer1.Panel1.Controls.Add(this.label6);
+            this.splitContainer1.Panel1.Controls.Add(this.tbCadFile);
             this.splitContainer1.Panel1.Controls.Add(this.tbComments);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
@@ -354,12 +360,22 @@ namespace PT
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
             this.splitContainer1.Size = new System.Drawing.Size(779, 721);
-            this.splitContainer1.SplitterDistance = 369;
+            this.splitContainer1.SplitterDistance = 387;
             this.splitContainer1.TabIndex = 148;
+            // 
+            // btnUpdateGridView
+            // 
+            this.btnUpdateGridView.Location = new System.Drawing.Point(438, 319);
+            this.btnUpdateGridView.Name = "btnUpdateGridView";
+            this.btnUpdateGridView.Size = new System.Drawing.Size(100, 28);
+            this.btnUpdateGridView.TabIndex = 160;
+            this.btnUpdateGridView.Text = "Update GridView";
+            this.btnUpdateGridView.UseVisualStyleBackColor = true;
+            this.btnUpdateGridView.Click += new System.EventHandler(this.BtnUpdateGridView_Click);
             // 
             // tbArchive
             // 
-            this.tbArchive.Location = new System.Drawing.Point(117, 328);
+            this.tbArchive.Location = new System.Drawing.Point(116, 354);
             this.tbArchive.Name = "tbArchive";
             this.tbArchive.Size = new System.Drawing.Size(647, 20);
             this.tbArchive.TabIndex = 159;
@@ -373,7 +389,7 @@ namespace PT
             // 
             // btnArchive
             // 
-            this.btnArchive.Location = new System.Drawing.Point(597, 300);
+            this.btnArchive.Location = new System.Drawing.Point(596, 326);
             this.btnArchive.Name = "btnArchive";
             this.btnArchive.Size = new System.Drawing.Size(75, 23);
             this.btnArchive.TabIndex = 157;
@@ -391,7 +407,7 @@ namespace PT
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(689, 300);
+            this.btnOpen.Location = new System.Drawing.Point(688, 326);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 155;
@@ -477,7 +493,7 @@ namespace PT
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(18, 331);
+            this.label13.Location = new System.Drawing.Point(17, 357);
             this.label13.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(43, 13);
@@ -558,6 +574,24 @@ namespace PT
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // tbCadFile
+            // 
+            this.tbCadFile.Location = new System.Drawing.Point(116, 328);
+            this.tbCadFile.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.tbCadFile.Name = "tbCadFile";
+            this.tbCadFile.Size = new System.Drawing.Size(241, 20);
+            this.tbCadFile.TabIndex = 127;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(18, 328);
+            this.label14.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(48, 13);
+            this.label14.TabIndex = 140;
+            this.label14.Text = "CAD File";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -632,6 +666,9 @@ namespace PT
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tbArchive;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button btnUpdateGridView;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox tbCadFile;
     }
 
 

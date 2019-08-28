@@ -41,6 +41,9 @@ namespace PT
     {
         public static string conn = ConfigurationManager.ConnectionStrings["DevConnString"].ToString();
 
+        //datagridview update test
+        IQueryable myQuery;
+
         public Form1()
         {
             InitializeComponent();
@@ -107,6 +110,7 @@ namespace PT
         {
             DataClasses1DataContext dc = new DataClasses1DataContext(conn);
             //DataClasses1DataContext dc = new DataClasses1DataContext();
+            //BindingSource bindingSource1 = new BindingSource();
             try
             {
                 // search all
@@ -161,7 +165,15 @@ namespace PT
                 //    tbComments.Text = item.Comments.ToString();
                 //}
 
-                dataGridView1.DataSource = query;
+                //datagridview update test
+                myQuery = query;
+
+                dataGridView1.DataSource = myQuery;
+                //bindingSource1.DataSource = myQuery;
+                //dataGridView1.DataSource = bindingSource1;
+
+
+
                 lblRecordCount.Text = dataGridView1.Rows.Count.ToString() + " Records Found";
                 //dataGridView1.da
             }
@@ -173,6 +185,8 @@ namespace PT
 
         public void btnInsert_Click(object sender, EventArgs e)
         {
+            string cadFileName = GetCadFileName();
+
             DataClasses1DataContext dc = new DataClasses1DataContext(conn);
             ProjectChange pc = new ProjectChange();
 
@@ -189,6 +203,7 @@ namespace PT
             pc.ChangeDescription = cbDescription.Text;
             pc.NewVersion = tbNewVersion.Text;
             pc.Comments = tbComments.Text;
+            pc.CadFile = cadFileName;
 
             //Adds an entity in a pending insert state to this System.Data.Linq.Table<TEntity>and parameter is the entity which to be added  
             dc.ProjectChanges.InsertOnSubmit(pc);
@@ -196,8 +211,33 @@ namespace PT
             dc.SubmitChanges();
             MessageBox.Show("Record Inserted.", "Success");
 
+            tbCadFile.Text = cadFileName;
             string recordName = getRecordName();
-            sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject);
+            sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject, pc.Comments, cadFileName);
+           }
+
+        private string GetCadFileName()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Please select the CAD file that was updated.";
+            //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            ofd.RestoreDirectory = true;
+
+            string _cadFileName = string.Empty;
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    _cadFileName = ofd.FileName;
+                    //Get the path of specified file
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Failed to recognize CAD filename.");
+                }
+            }
+                    return _cadFileName;
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -221,6 +261,7 @@ namespace PT
                 pc.ChangeDescription = cbDescription.Text;
                 pc.NewVersion = tbNewVersion.Text;
                 pc.Comments = tbComments.Text;
+                pc.CadFile = tbCadFile.Text;
                 pc.Archive = tbArchive.Text;
 
                 dcContext.SubmitChanges();
@@ -244,6 +285,11 @@ namespace PT
 
                     dataContext.SubmitChanges();
                     MessageBox.Show("Record Deleted.", "Success");
+
+                    //datagridview update test
+                    dataGridView1.DataSource = null;
+                    dataGridView1.DataSource = myQuery;
+                    dataGridView1.Refresh();
                 }
             }
             catch (Exception)
@@ -444,9 +490,10 @@ namespace PT
             tbNewVersion.Text = row.Cells[9].Value.ToString();
             tbOldVersion.Text = row.Cells[10].Value.ToString();
             tbComments.Text = row.Cells[11].Value.ToString();
+            tbCadFile.Text = row.Cells[12].Value.ToString();
             // ternary conditional to check if the value is null - may have to math this condition on the other values
             // tbArchive.Text = row.Cells[12].Value.ToString();
-            tbArchive.Text = row.Cells[12].Value == null ? string.Empty : row.Cells[12].Value.ToString();
+            tbArchive.Text = row.Cells[13].Value == null ? string.Empty : row.Cells[12].Value.ToString();
 
 
 
@@ -484,14 +531,17 @@ namespace PT
             //dtpData.CustomFormat = " ";
             //dtpData.Format = DateTimePickerFormat.Custom;
             dtpData.ResetText();
-            cbDrafter.SelectedIndex = -1;
-            cbInitiatedBy.SelectedIndex = -1;
-            cbChangeType.SelectedIndex = -1;
+            //cbDrafter.SelectedIndex = -1;
+            cbDrafter.Text = string.Empty;
+            //cbInitiatedBy.SelectedIndex = -1;
+            cbInitiatedBy.Text = string.Empty;
+            //cbChangeType.SelectedIndex = -1;
+            cbChangeType.Text = string.Empty;
             tbOldVersion.Clear();
-            //cbDescription.Clear();
-            cbDescription.SelectedIndex = -1;
+            cbDescription.Text = string.Empty;
             tbNewVersion.Clear();
             tbComments.Clear();
+            tbCadFile.Clear();
             tbArchive.Clear();
         }
 
@@ -629,17 +679,47 @@ namespace PT
         }
 
         // need to add reference Microsoft.Office.Interop.Outlook - its on the COM tab
-        private void sendEmail(string recordName, string Drafter, string ProjectNumber, string ProjectName, string SubProject)
+        private void sendEmail(string recordName, string Drafter, string ProjectNumber, string ProjectName, string SubProject, string comments, string cadFileName)
         {
             Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
             Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
             mailItem.Subject = $"Drawing Updated: {ProjectNumber} - {ProjectName} - {SubProject}";
             mailItem.To = "NadiaK@abfabricators.com";
-            mailItem.Body = $"Drafter {Drafter} has updated CAD File at this location: {recordName}.{Environment.NewLine}" +
+            mailItem.Body = $"Drafter {Drafter} has updated CAD File at this location: {cadFileName}.{Environment.NewLine}" +
                             $"{Environment.NewLine}" +
-                            $"Note:{Environment.NewLine}";
+                            $"Note:{Environment.NewLine}" +
+                            $"{comments}";
             //mailItem.Attachments.Add(logPath);//logPath is a string holding path to the log.txt file
+
+            try
+            {
             mailItem.Display(true); //THIS IS THE CHANGE;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot create Outlook email object, perhaps Outlook object is open?");
+            }
+        }
+
+        private void BtnUpdateGridView_Click(object sender, EventArgs e)
+        {
+
+            //DataClasses1DataContext dc = new DataClasses1DataContext(conn);
+            ////datagridview update test
+            ////dataGridView1.DataSource = null;
+            //dataGridView1.DataSource = myQuery;
+            ////select pc;
+
+
+            //dataGridView1.DataSource = bindingSource1;
+            dataGridView1.Refresh();
+            dataGridView1.ResumeLayout();
+            //dataGridView1.DataSource = myQuery;
+            //dataGridView1.Update();
+            //dataGridView1.DataSource = myQuery;
+            dataGridView1.Update();
+            dataGridView1.RefreshEdit();
+
         }
     }
 

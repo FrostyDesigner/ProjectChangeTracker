@@ -104,6 +104,8 @@ namespace PT
 		
 		private string _Comments;
 		
+		private string _CadFile;
+		
 		private string _Archive;
 		
     #region Extensibility Method Definitions
@@ -134,6 +136,8 @@ namespace PT
     partial void OnOldVersionChanged();
     partial void OnCommentsChanging(string value);
     partial void OnCommentsChanged();
+    partial void OnCadFileChanging(string value);
+    partial void OnCadFileChanged();
     partial void OnArchiveChanging(string value);
     partial void OnArchiveChanged();
     #endregion
@@ -379,6 +383,26 @@ namespace PT
 					this._Comments = value;
 					this.SendPropertyChanged("Comments");
 					this.OnCommentsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CadFile", DbType="NVarChar(500)")]
+		public string CadFile
+		{
+			get
+			{
+				return this._CadFile;
+			}
+			set
+			{
+				if ((this._CadFile != value))
+				{
+					this.OnCadFileChanging(value);
+					this.SendPropertyChanging();
+					this._CadFile = value;
+					this.SendPropertyChanged("CadFile");
+					this.OnCadFileChanged();
 				}
 			}
 		}
