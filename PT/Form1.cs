@@ -161,8 +161,10 @@ namespace PT
                 //    tbNewVersion.Text = item.NewVersion.ToString();
                 //    tbComments.Text = item.Comments.ToString();
                 //}
-                
+
+                // auto fit column widths
                 dataGridView1.DataSource = query;
+                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 lblRecordCount.Text = dataGridView1.Rows.Count.ToString() + " Records Found";
             }
             catch (Exception ex)
@@ -174,6 +176,8 @@ namespace PT
         public void btnInsert_Click(object sender, EventArgs e)
         {
             string cadFileName = GetCadFileName();
+            tbCadFile.Text = cadFileName;
+            string newFilePath = ArchiveFile(cadFileName);
 
             DataClasses1DataContext dc = new DataClasses1DataContext(conn);
             ProjectChange pc = new ProjectChange();
@@ -192,17 +196,16 @@ namespace PT
             pc.NewVersion = tbNewVersion.Text;
             pc.Comments = tbComments.Text;
             pc.CadFile = cadFileName;
+            pc.Archive = newFilePath;
 
             //Adds an entity in a pending insert state to this System.Data.Linq.Table<TEntity>and parameter is the entity which to be added  
             dc.ProjectChanges.InsertOnSubmit(pc);
             // executes the appropriate commands to implement the changes to the database 
             dc.SubmitChanges();
 
-            tbCadFile.Text = cadFileName;
+
+
             string recordName = getRecordName();
-
-            ArchiveFile(cadFileName);
-
             sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject, pc.Comments, cadFileName);
 
             UpdateGridView();
@@ -507,7 +510,7 @@ namespace PT
             tbCadFile.Text = row.Cells[12].Value.ToString();
             // ternary conditional to check if the value is null - may have to math this condition on the other values
             // tbArchive.Text = row.Cells[12].Value.ToString();
-            tbArchive.Text = row.Cells[13].Value == null ? string.Empty : row.Cells[12].Value.ToString();
+            tbArchive.Text = row.Cells[13].Value == null ? string.Empty : row.Cells[13].Value.ToString();
 
 
 
@@ -611,7 +614,7 @@ namespace PT
             //ArchiveFile();
         }
 
-        private void ArchiveFile(string cadFileName)
+        private string ArchiveFile(string cadFileName)
         {
             var oldFilePath = string.Empty;
             var newFilePath = string.Empty;
@@ -633,7 +636,7 @@ namespace PT
                     oldFilePath = cadFileName;
                     string oldFileExtension = Path.GetExtension(oldFilePath);
                     // works for ABF - Commented out for development
-                    newFilePath = $@"P:\A&B\Projects\Squid\Archive\{archiveFileName}.{oldFileExtension}";
+                    newFilePath = $@"P:\A&B\Projects\Squid\Archive\{archiveFileName}{oldFileExtension}";
                     // dev only
                     //string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     //newFilePath = $@"{path}\Squid\{archiveFileName}{oldFileExtension}";
@@ -649,33 +652,35 @@ namespace PT
                     MessageBox.Show("Failed to copy to Archive location.");
                 }
 
-                try
-                {
-                    DataClasses1DataContext dcContext = new DataClasses1DataContext(conn);
-                    //Get Single record which we need to update  
-                    ProjectChange pc = dcContext.ProjectChanges.Single(r => r.Id == tbId.Text);
+                return newFilePath;
 
-                    //pc.Id = Guid.NewGuid().ToString();
-                    pc.ProjectNumber = tbProjectNumber.Text;
-                    pc.ProjectName = tbProjectName.Text;
-                    //pc.Date = Convert.ToDateTime(tbDate.Text);
-                    pc.ProjectDate = Convert.ToDateTime(dtpData.Text);
-                    pc.Drafter = cbDrafter.Text;
-                    pc.InitiatedBy = cbInitiatedBy.Text;
-                    pc.ChangeType = cbChangeType.Text;
-                    pc.OldVersion = tbOldVersion.Text;
-                    pc.ChangeDescription = cbDescription.Text;
-                    pc.NewVersion = tbNewVersion.Text;
-                    pc.Comments = tbComments.Text;
-                    pc.Archive = tbArchive.Text;
+                //try
+                //{
+                //    DataClasses1DataContext dcContext = new DataClasses1DataContext(conn);
+                //    //Get Single record which we need to update  
+                //    ProjectChange pc = dcContext.ProjectChanges.Single(r => r.Id == tbId.Text);
 
-                    dcContext.SubmitChanges();
-                    //MessageBox.Show("Record Updated.", "Success");
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Record Id must be populated in Id text box.");
-                }
+                //    //pc.Id = Guid.NewGuid().ToString();
+                //    pc.ProjectNumber = tbProjectNumber.Text;
+                //    pc.ProjectName = tbProjectName.Text;
+                //    //pc.Date = Convert.ToDateTime(tbDate.Text);
+                //    pc.ProjectDate = Convert.ToDateTime(dtpData.Text);
+                //    pc.Drafter = cbDrafter.Text;
+                //    pc.InitiatedBy = cbInitiatedBy.Text;
+                //    pc.ChangeType = cbChangeType.Text;
+                //    pc.OldVersion = tbOldVersion.Text;
+                //    pc.ChangeDescription = cbDescription.Text;
+                //    pc.NewVersion = tbNewVersion.Text;
+                //    pc.Comments = tbComments.Text;
+                //    pc.Archive = tbArchive.Text;
+
+                //    dcContext.SubmitChanges();
+                //    //MessageBox.Show("Record Updated.", "Success");
+                //}
+                //catch (Exception)
+                //{
+                //    MessageBox.Show("Record Id must be populated in Id text box.");
+                //}
             //}
         }
 
@@ -693,11 +698,11 @@ namespace PT
             var isNumeric = int.TryParse(tbNewVersion.Text, out int n);
             if (n > 0)
             {
-                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} - Revision {projectDate}.pdf";
+                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} - Revision {projectDate}";
             }
             else
             {
-                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} {projectDate}.pdf";
+                archiveFileName = $@"{projectNumber} {projectName} {subProject} Rev {newVersion} - {projectDescription} {projectDate}";
             }
 
             return archiveFileName;
