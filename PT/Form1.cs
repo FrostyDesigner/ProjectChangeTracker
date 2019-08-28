@@ -40,10 +40,7 @@ namespace PT
     public partial class Form1 : Form
     {
         public static string conn = ConfigurationManager.ConnectionStrings["DevConnString"].ToString();
-
-        //datagridview update test
-        IQueryable myQuery;
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -164,18 +161,9 @@ namespace PT
                 //    tbNewVersion.Text = item.NewVersion.ToString();
                 //    tbComments.Text = item.Comments.ToString();
                 //}
-
-                //datagridview update test
-                myQuery = query;
-
-                dataGridView1.DataSource = myQuery;
-                //bindingSource1.DataSource = myQuery;
-                //dataGridView1.DataSource = bindingSource1;
-
-
-
+                
+                dataGridView1.DataSource = query;
                 lblRecordCount.Text = dataGridView1.Rows.Count.ToString() + " Records Found";
-                //dataGridView1.da
             }
             catch (Exception ex)
             {
@@ -209,12 +197,37 @@ namespace PT
             dc.ProjectChanges.InsertOnSubmit(pc);
             // executes the appropriate commands to implement the changes to the database 
             dc.SubmitChanges();
-            MessageBox.Show("Record Inserted.", "Success");
 
             tbCadFile.Text = cadFileName;
             string recordName = getRecordName();
+
+            ArchiveFile(cadFileName);
+
             sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject, pc.Comments, cadFileName);
+
+            UpdateGridView();
+            ClearForm();
+            MessageBox.Show("Record Inserted.", "Success");
            }
+
+        private void UpdateGridView()
+        {
+            DataClasses1DataContext dc = new DataClasses1DataContext(conn);
+            try
+            {
+                var query = from pc in dc.ProjectChanges
+                            where pc.ProjectNumber.Contains(tbProjectNumber.Text ?? string.Empty) 
+                            select pc;
+
+                dataGridView1.DataSource = query;
+
+                lblRecordCount.Text = dataGridView1.Rows.Count.ToString() + " Records Found";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Failed to connect", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
 
         private string GetCadFileName()
         {
@@ -266,6 +279,9 @@ namespace PT
 
                 dcContext.SubmitChanges();
                 MessageBox.Show("Record Updated.", "Success");
+
+                UpdateGridView();
+                ClearForm();
             }
             catch (Exception)
             {
@@ -286,10 +302,8 @@ namespace PT
                     dataContext.SubmitChanges();
                     MessageBox.Show("Record Deleted.", "Success");
 
-                    //datagridview update test
-                    dataGridView1.DataSource = null;
-                    dataGridView1.DataSource = myQuery;
-                    dataGridView1.Refresh();
+                    UpdateGridView();
+                    ClearForm();
                 }
             }
             catch (Exception)
@@ -524,6 +538,11 @@ namespace PT
 
         private void btnClear_Click(object sender, EventArgs e)
         {
+            ClearForm();
+        }
+
+        private void ClearForm()
+        {
             tbId.Clear();
             tbProjectNumber.Clear();
             tbProjectName.Clear();
@@ -587,24 +606,31 @@ namespace PT
             System.Diagnostics.Process.Start(filePath);
         }
 
-        private void BtnArchive_Click(object sender, EventArgs e)
+        private void btnArchive_Click(object sender, EventArgs e)
+        {
+            //ArchiveFile();
+        }
+
+        private void ArchiveFile(string cadFileName)
         {
             var oldFilePath = string.Empty;
             var newFilePath = string.Empty;
 
             string archiveFileName = getRecordName();
 
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //OpenFileDialog ofd = new OpenFileDialog();
+            //ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //ofd.Title = "Please Select File to be Archived.";
             //ofd.ShowDialog();
 
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
+            //if (ofd.ShowDialog() == DialogResult.OK)
+            //{
                 try
                 {
 
                     //Get the path of specified file
-                    oldFilePath = ofd.FileName;
+                    //oldFilePath = ofd.FileName;
+                    oldFilePath = cadFileName;
                     string oldFileExtension = Path.GetExtension(oldFilePath);
                     // works for ABF - Commented out for development
                     newFilePath = $@"P:\A&B\Projects\Squid\Archive\{archiveFileName}.{oldFileExtension}";
@@ -615,8 +641,8 @@ namespace PT
                     //Copy and rename the file into the Archive Directory
                     //works
                     //File.Copy(filePath, @"P:\A&B\Projects\Squid\Archive\My1234.pdf");
-                    File.Copy(oldFilePath, newFilePath);
                     tbArchive.Text = newFilePath;
+                    File.Copy(oldFilePath, newFilePath);
                 }
                 catch (Exception)
                 {
@@ -644,13 +670,13 @@ namespace PT
                     pc.Archive = tbArchive.Text;
 
                     dcContext.SubmitChanges();
-                    MessageBox.Show("Record Updated.", "Success");
+                    //MessageBox.Show("Record Updated.", "Success");
                 }
                 catch (Exception)
                 {
                     MessageBox.Show("Record Id must be populated in Id text box.");
                 }
-            }
+            //}
         }
 
         private string getRecordName()
@@ -700,35 +726,5 @@ namespace PT
                 MessageBox.Show("Cannot create Outlook email object, perhaps Outlook object is open?");
             }
         }
-
-        private void BtnUpdateGridView_Click(object sender, EventArgs e)
-        {
-
-            //DataClasses1DataContext dc = new DataClasses1DataContext(conn);
-            ////datagridview update test
-            ////dataGridView1.DataSource = null;
-            //dataGridView1.DataSource = myQuery;
-            ////select pc;
-
-
-            //dataGridView1.DataSource = bindingSource1;
-            dataGridView1.Refresh();
-            dataGridView1.ResumeLayout();
-            //dataGridView1.DataSource = myQuery;
-            //dataGridView1.Update();
-            //dataGridView1.DataSource = myQuery;
-            dataGridView1.Update();
-            dataGridView1.RefreshEdit();
-
-        }
     }
-
-
-    //public partial class DataClassesDataContext : System.Data.Linq.DataContext
-    //{
-    //    public DataClassesDataContext() : base(ConfigurationManager.ConnectionStrings["Dev -connString"].ConnectionString)
-    //    {
-    //        //OnCreated();
-    //    }
-    //}
 }
