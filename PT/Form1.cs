@@ -372,7 +372,7 @@ namespace PT
                 oldFilePath = $@"{path}\squid.pdf";
 
                 // works for ABF P Drive - commented out for development
-                newFilePath = $@"P:\A&B\Projects\Squid\Archive\{archiveFileName}.pdf";
+                newFilePath = $@"P:\A&B\Projects\Archive\{archiveFileName}.pdf";
                 //newFilePath = $@"C:\Users\Robert\Desktop\squid\{archiveFileName}.pdf";
 
                 //Copy and rename the file into the Archive Directory
@@ -609,11 +609,6 @@ namespace PT
             System.Diagnostics.Process.Start(filePath);
         }
 
-        private void btnArchive_Click(object sender, EventArgs e)
-        {
-            //ArchiveFile();
-        }
-
         private string ArchiveFile(string cadFileName)
         {
             var oldFilePath = string.Empty;
@@ -636,7 +631,7 @@ namespace PT
                     oldFilePath = cadFileName;
                     string oldFileExtension = Path.GetExtension(oldFilePath);
                     // works for ABF - Commented out for development
-                    newFilePath = $@"P:\A&B\Projects\Squid\Archive\{archiveFileName}{oldFileExtension}";
+                    newFilePath = $@"P:\A&B\Projects\Archive\{archiveFileName}{oldFileExtension}";
                     // dev only
                     //string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     //newFilePath = $@"{path}\Squid\{archiveFileName}{oldFileExtension}";
@@ -690,7 +685,8 @@ namespace PT
             string projectName = tbProjectName.Text;
             string subProject = tbSubProject.Text;
             string newVersion = tbNewVersion.Text;
-            string projectDescription = cbDescription.SelectedItem.ToString();
+            //string projectDescription = cbDescription.SelectedItem.ToString();
+            string projectDescription = cbDescription.Text;
             string projectDate = dtpData.Value.Date.ToString("yyyyMMdd");
             string archiveFileName = string.Empty;
 

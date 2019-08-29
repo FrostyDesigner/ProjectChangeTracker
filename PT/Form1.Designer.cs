@@ -56,7 +56,6 @@ namespace PT
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tbArchive = new System.Windows.Forms.TextBox();
             this.tbSubProject = new System.Windows.Forms.TextBox();
-            this.btnArchive = new System.Windows.Forms.Button();
             this.cbDescription = new System.Windows.Forms.ComboBox();
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -317,7 +316,6 @@ namespace PT
             // 
             this.splitContainer1.Panel1.Controls.Add(this.tbArchive);
             this.splitContainer1.Panel1.Controls.Add(this.tbSubProject);
-            this.splitContainer1.Panel1.Controls.Add(this.btnArchive);
             this.splitContainer1.Panel1.Controls.Add(this.cbDescription);
             this.splitContainer1.Panel1.Controls.Add(this.btnOpen);
             this.splitContainer1.Panel1.Controls.Add(this.btnDelete);
@@ -374,16 +372,6 @@ namespace PT
             this.tbSubProject.Name = "tbSubProject";
             this.tbSubProject.Size = new System.Drawing.Size(241, 20);
             this.tbSubProject.TabIndex = 158;
-            // 
-            // btnArchive
-            // 
-            this.btnArchive.Location = new System.Drawing.Point(597, 299);
-            this.btnArchive.Name = "btnArchive";
-            this.btnArchive.Size = new System.Drawing.Size(75, 23);
-            this.btnArchive.TabIndex = 157;
-            this.btnArchive.Text = "Archive";
-            this.btnArchive.UseVisualStyleBackColor = true;
-            this.btnArchive.Click += new System.EventHandler(this.btnArchive_Click);
             // 
             // cbDescription
             // 
@@ -649,7 +637,6 @@ namespace PT
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.ComboBox cbDescription;
-        private System.Windows.Forms.Button btnArchive;
         private System.Windows.Forms.TextBox tbSubProject;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tbArchive;
