@@ -301,6 +301,7 @@ namespace PT
             this.button1.TabIndex = 147;
             this.button1.Text = "Random Insert";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // splitContainer1
@@ -400,6 +401,7 @@ namespace PT
             this.btnDelete.TabIndex = 154;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Visible = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnClear

@@ -45,6 +45,8 @@ namespace PT
         {
             InitializeComponent();
 
+            checkUser();
+
             ArrayList aList = new ArrayList();
             aList.Add("ProjectNumber");
             aList.Add("ProjectName");
@@ -101,6 +103,23 @@ namespace PT
             iDescription.Add("Issued for Preliminary Field Measurements");
             iDescription.Add("Issued for Fabrication");
             cbDescription.DataSource = iDescription;
+        }
+
+        private void checkUser()
+        {
+            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+
+            //MessageBox.Show(userName);
+
+            if (userName == @"ALLNEWGLASS\rhale")
+            {
+                button1.Visible = true;
+            }
+
+            if (userName == @"ALLNEWGLASS\rhale" || userName == @"ALLNEWGLASS\nkucukovic")
+            {
+                btnDelete.Visible = true;
+            }
         }
 
         private void btnDoStuff_Click(object sender, EventArgs e)
