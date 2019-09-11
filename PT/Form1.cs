@@ -194,42 +194,49 @@ namespace PT
 
         public void btnInsert_Click(object sender, EventArgs e)
         {
-            string cadFileName = GetCadFileName();
-            tbCadFile.Text = cadFileName;
-            string newFilePath = ArchiveFile(cadFileName);
+            try
+            {
+                string cadFileName = GetCadFileName();
+                tbCadFile.Text = cadFileName;
+                string newFilePath = ArchiveFile(cadFileName);
 
-            DataClasses1DataContext dc = new DataClasses1DataContext(conn);
-            ProjectChange pc = new ProjectChange();
+                DataClasses1DataContext dc = new DataClasses1DataContext(conn);
+                ProjectChange pc = new ProjectChange();
 
-            pc.Id = Guid.NewGuid().ToString();
-            pc.ProjectNumber = tbProjectNumber.Text;
-            pc.ProjectName = tbProjectName.Text;
-            pc.SubProject = tbSubProject.Text;
-            //pc.Date = Convert.ToDateTime(tbDate.Text);
-            pc.ProjectDate = Convert.ToDateTime(dtpData.Text);
-            pc.Drafter = cbDrafter.Text;
-            pc.InitiatedBy = cbInitiatedBy.Text;
-            pc.ChangeType = cbChangeType.Text;
-            pc.OldVersion = tbOldVersion.Text;
-            pc.ChangeDescription = cbDescription.Text;
-            pc.NewVersion = tbNewVersion.Text;
-            pc.Comments = tbComments.Text;
-            pc.CadFile = cadFileName;
-            pc.Archive = newFilePath;
+                pc.Id = Guid.NewGuid().ToString();
+                pc.ProjectNumber = tbProjectNumber.Text;
+                pc.ProjectName = tbProjectName.Text;
+                pc.SubProject = tbSubProject.Text;
+                //pc.Date = Convert.ToDateTime(tbDate.Text);
+                pc.ProjectDate = Convert.ToDateTime(dtpData.Text);
+                pc.Drafter = cbDrafter.Text;
+                pc.InitiatedBy = cbInitiatedBy.Text;
+                pc.ChangeType = cbChangeType.Text;
+                pc.OldVersion = tbOldVersion.Text;
+                pc.ChangeDescription = cbDescription.Text;
+                pc.NewVersion = tbNewVersion.Text;
+                pc.Comments = tbComments.Text;
+                pc.CadFile = cadFileName;
+                pc.Archive = newFilePath;
 
-            //Adds an entity in a pending insert state to this System.Data.Linq.Table<TEntity>and parameter is the entity which to be added  
-            dc.ProjectChanges.InsertOnSubmit(pc);
-            // executes the appropriate commands to implement the changes to the database 
-            dc.SubmitChanges();
+                //Adds an entity in a pending insert state to this System.Data.Linq.Table<TEntity>and parameter is the entity which to be added  
+                dc.ProjectChanges.InsertOnSubmit(pc);
+                // executes the appropriate commands to implement the changes to the database 
+                dc.SubmitChanges();
 
 
 
-            string recordName = getRecordName();
-            sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject, pc.Comments, cadFileName);
+                string recordName = getRecordName();
+                sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject, pc.Comments, cadFileName);
 
-            UpdateGridView();
-            ClearForm();
-            MessageBox.Show("Record Inserted.", "Success");
+                UpdateGridView();
+                ClearForm();
+                MessageBox.Show("Record Inserted.", "Success");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failure to connect to database. Please verify SQL Server is running or contact system administrator.");
+            }
            }
 
         private void UpdateGridView()
@@ -622,10 +629,17 @@ namespace PT
 
         private void BtnOpen_Click(object sender, EventArgs e)
         {
-            var filePath = tbArchive.Text;
-            // works
-            //System.Diagnostics.Process.Start(@"P:\A&B\Projects\Squid\Archive\1906 Expedia W18 Rev A - Issued for First Preliminary Review 20190710.pdf");
-            System.Diagnostics.Process.Start(filePath);
+            try
+            {
+                var filePath = tbArchive.Text;
+                // works
+                //System.Diagnostics.Process.Start(@"P:\A&B\Projects\Squid\Archive\1906 Expedia W18 Rev A - Issued for First Preliminary Review 20190710.pdf");
+                System.Diagnostics.Process.Start(filePath);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot find the file requested. Please verify that the file exists.");
+            }
         }
 
         private string ArchiveFile(string cadFileName)
@@ -739,7 +753,7 @@ namespace PT
 
             try
             {
-            mailItem.Display(true); //THIS IS THE CHANGE;
+                mailItem.Display(true); //THIS IS THE CHANGE;
             }
             catch (Exception)
             {
