@@ -760,5 +760,63 @@ namespace PT
                 MessageBox.Show("Cannot create Outlook email object, perhaps Outlook object is open?");
             }
         }
+
+        private void sendEmail(string recordName, string Drafter, string ProjectNumber, string ProjectName, string SubProject)
+        {
+            Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
+            Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
+            mailItem.Subject = $"{ProjectNumber} - {ProjectName} - {SubProject} : Drawing Change Requested";
+            mailItem.To = "NadiaK@abfabricators.com";
+            mailItem.Body = $"Hi {Drafter}, {Environment.NewLine}" +
+                            $"{Environment.NewLine}" +
+                            $"Please update the drawing with the following edits..." +
+                            $"{Environment.NewLine}";
+            //mailItem.Attachments.Add(logPath);//logPath is a string holding path to the log.txt file
+
+            try
+            {
+                mailItem.Display(true); //THIS IS THE CHANGE;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot create Outlook email object, perhaps Outlook object is open?");
+            }
+        }
+
+        private void BtnChangeRequest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //string cadFileName = GetCadFileName();
+                //tbCadFile.Text = cadFileName;
+                //string newFilePath = ArchiveFile(cadFileName);
+
+                DataClasses1DataContext dc = new DataClasses1DataContext(conn);
+                ProjectChange pc = new ProjectChange();
+
+                pc.Id = Guid.NewGuid().ToString();
+                pc.ProjectNumber = tbProjectNumber.Text;
+                pc.ProjectName = tbProjectName.Text;
+                pc.SubProject = tbSubProject.Text;
+                //pc.Date = Convert.ToDateTime(tbDate.Text);
+                pc.ProjectDate = Convert.ToDateTime(dtpData.Text);
+                pc.Drafter = cbDrafter.Text;
+                pc.InitiatedBy = cbInitiatedBy.Text;
+                pc.ChangeType = cbChangeType.Text;
+                pc.OldVersion = tbOldVersion.Text;
+                pc.ChangeDescription = cbDescription.Text;
+                pc.NewVersion = tbNewVersion.Text;
+                pc.Comments = tbComments.Text;
+                //pc.CadFile = cadFileName;
+                //pc.Archive = newFilePath;
+                               
+                string recordName = getRecordName();
+                sendEmail(recordName, pc.Drafter, pc.ProjectNumber, pc.ProjectName, pc.SubProject);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failure to connect to database. Please verify SQL Server is running or contact system administrator.");
+            }
+        }
     }
 }

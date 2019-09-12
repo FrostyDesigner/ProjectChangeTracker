@@ -53,6 +53,7 @@ namespace PT
             this.btnDoStuff = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnChangeRequest = new System.Windows.Forms.Button();
             this.tbArchive = new System.Windows.Forms.TextBox();
             this.tbSubProject = new System.Windows.Forms.TextBox();
             this.cbDescription = new System.Windows.Forms.ComboBox();
@@ -67,24 +68,24 @@ namespace PT
             this.lblRecordCount = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tbCadFile = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnInsert
@@ -284,9 +285,9 @@ namespace PT
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(668, 9);
+            this.button1.Location = new System.Drawing.Point(667, 10);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(96, 23);
+            this.button1.Size = new System.Drawing.Size(96, 26);
             this.button1.TabIndex = 147;
             this.button1.Text = "Random Insert";
             this.button1.UseVisualStyleBackColor = true;
@@ -304,6 +305,7 @@ namespace PT
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnChangeRequest);
             this.splitContainer1.Panel1.Controls.Add(this.tbArchive);
             this.splitContainer1.Panel1.Controls.Add(this.tbSubProject);
             this.splitContainer1.Panel1.Controls.Add(this.cbDescription);
@@ -349,6 +351,17 @@ namespace PT
             this.splitContainer1.SplitterDistance = 387;
             this.splitContainer1.TabIndex = 148;
             // 
+            // btnChangeRequest
+            // 
+            this.btnChangeRequest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChangeRequest.Location = new System.Drawing.Point(364, 244);
+            this.btnChangeRequest.Name = "btnChangeRequest";
+            this.btnChangeRequest.Size = new System.Drawing.Size(124, 26);
+            this.btnChangeRequest.TabIndex = 160;
+            this.btnChangeRequest.Text = "Change Request";
+            this.btnChangeRequest.UseVisualStyleBackColor = true;
+            this.btnChangeRequest.Click += new System.EventHandler(this.BtnChangeRequest_Click);
+            // 
             // tbArchive
             // 
             this.tbArchive.Location = new System.Drawing.Point(116, 354);
@@ -373,11 +386,11 @@ namespace PT
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(689, 299);
+            this.btnOpen.Location = new System.Drawing.Point(668, 299);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(75, 23);
+            this.btnOpen.Size = new System.Drawing.Size(96, 23);
             this.btnOpen.TabIndex = 155;
-            this.btnOpen.Text = "Open";
+            this.btnOpen.Text = "Open Archive";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
             // 
@@ -451,7 +464,7 @@ namespace PT
             this.lblRecordCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRecordCount.AutoSize = true;
             this.lblRecordCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRecordCount.Location = new System.Drawing.Point(475, 248);
+            this.lblRecordCount.Location = new System.Drawing.Point(566, 246);
             this.lblRecordCount.Name = "lblRecordCount";
             this.lblRecordCount.Size = new System.Drawing.Size(197, 20);
             this.lblRecordCount.TabIndex = 146;
@@ -476,6 +489,17 @@ namespace PT
             this.label14.Size = new System.Drawing.Size(48, 13);
             this.label14.TabIndex = 140;
             this.label14.Text = "CAD File";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Image = global::PT.Properties.Resources.ABLogo;
+            this.pictureBox1.Location = new System.Drawing.Point(364, 70);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(400, 171);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 145;
+            this.pictureBox1.TabStop = false;
             // 
             // tbCadFile
             // 
@@ -522,6 +546,16 @@ namespace PT
             this.toolStripSeparator.Name = "toolStripSeparator";
             this.toolStripSeparator.Size = new System.Drawing.Size(135, 6);
             // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
+            this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -549,27 +583,6 @@ namespace PT
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Image = global::PT.Properties.Resources.ABLogo;
-            this.pictureBox1.Location = new System.Drawing.Point(364, 70);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(400, 171);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 145;
-            this.pictureBox1.TabStop = false;
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
-            this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -589,9 +602,9 @@ namespace PT
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -646,6 +659,7 @@ namespace PT
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox tbCadFile;
+        private System.Windows.Forms.Button btnChangeRequest;
     }
 
 
